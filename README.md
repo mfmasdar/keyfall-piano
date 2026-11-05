@@ -1,69 +1,100 @@
-# Keyfall · Piano learning MVP
+# Keyfall V1.1 — guided piano practice
 
-**Every note, a little easier.**
+**Every note, a little easier.** Static, responsive piano-learning website, with two practical learning modes. Open `DEPLOYMENT.md` for publishing instructions.
 
-A deployable, dependency-free website for learning beginner piano pieces with falling notes. A new note only moves forward after the learner plays the highlighted piano key(s). No scoring, timers, lives, subscriptions, accounts, analytics, or server are involved.
+## What's new in V1.1
 
-## Features
+| Feature | How it works |
+| --- | --- |
+| **Wait for correct note** | Falling notes pause at the keyboard. Wrong notes do not move the piece; completing all notes in the target chord advances it. |
+| **Continuous play** | Falling notes advance on their own according to the selected tempo, whether the learner hits a note or misses it. Play/Pause controls the moving timeline. |
+| **Correct-note light** | The corresponding physical target key on screen flashes vivid green when a correctly timed note is detected in **either** mode. Other notes do not cause green feedback. |
+| **Tempo controls** | Choose 50, 70, 90, 110, or 130 beats/minute in Continuous mode. |
+| **Optional guide sound** | A quiet synthesised piano-like tone plays the chosen track in Continuous mode. Optional and OFF by default; automatically turned off when the microphone connects to avoid false microphone recognition. |
+| **Searchable song library** | 11 bundled beginner pieces: familiar songs, classical melody, and original exercises. Filter and search; select a song or tap Listen for a short audio preview. |
+| **Track and hand selection** | Select MIDI track / MusicXML part. In multi-staff MusicXML, select right (staff 1), left (staff 2), or both. Drums are ignored on MIDI import. |
+| **Import** | Drag/drop or upload MusicXML (`.xml`, `.musicxml`), MIDI (`.mid`, `.midi`), or enter a direct file URL with working CORS. |
+| **Keyboard input** | On-screen touch/mouse, microphone pitch detection for acoustic piano, Web MIDI on supported desktop browsers. A-W-S-E-D-F-T-G-Y-H-U-J-K also maps C4–C5 for testing. |
 
-- **Choose music:** Three included public-domain / traditional beginner melodies; upload a `.musicxml` / `.xml` score; upload `.mid` / `.midi`; or paste a direct MusicXML/MIDI URL.
-- **Read along:** A simplified staff-based preview shows current and upcoming notes; the falling note lanes are aligned to a real piano layout with black keys and labeled C keys.
-- **Wait mode:** Nothing advances because of elapsed time. Wrong keys do not advance. The animation proceeds to the next note only after all required pitch(es) have been heard or tapped.
-- **Input:** Microphone detection for acoustic/digital piano, Web MIDI for supported browsers, and tap/click support on the on-screen keys. An optional QWERTY test mapping is available (`a w s e d f t g y h u j k` from C4 to C5).
-- **Chords:** Multiple target keys are highlighted. They can be completed in any order within the same step. Microphone detection is monophonic and should be played one note at a time for chord steps.
-- **Safe default:** Audio is analyzed entirely within the browser. It is not sent to a remote server. Imported scores are processed locally. Using the URL importer fetches the chosen file from the URL as expected.
+No scoring, login, database, API key, remote MIDI provider, dependencies, package manager, or build pipeline. Audio analysis is local to the learner's browser.
 
-## Quick start
+## Supported formats and repertoire
 
-Open [DEPLOYMENT.md](DEPLOYMENT.md) for detailed **Netlify Drop**, **GitHub Pages** and **local server** steps.
+| Built-in piece | Type |
+| --- | --- |
+| Twinkle, Twinkle, Little Star | Traditional melody |
+| Ode to Joy | Beethoven melody |
+| Mary Had a Little Lamb | Traditional melody |
+| Frère Jacques | Traditional melody |
+| London Bridge | Traditional melody |
+| Row, Row, Row Your Boat | Traditional melody |
+| Jingle Bells (chorus) | Public-domain composition, simplified melody |
+| When the Saints Go Marching In | Traditional melody |
+| C Major Scale | Original learning exercise |
+| C Major Arpeggio | Original learning exercise |
+| First Piano Chords | Original learning exercise |
+
+These are **self-contained demonstration arrangements**, with simple timing and melody; not reproductions of commercial score editions or licensed recordings.
+
+The Library also provides outbound links to [Mutopia](https://www.mutopiaproject.org/), [OpenScore](https://openscore.cc/), and [BitMidi](https://bitmidi.com/). They are discovery links: users download eligible MIDI/MusicXML files themselves and import them, rather than being scraped by this app. MIDI files for modern songs are often multi-instrument; use **Instrument / MIDI track** after import. Check redistribution rights before bundling any third-party file into a public app.
+
+## Two modes — precise behavior
+
+### Mode A — Wait for correct note (initial/default)
+
+1. Each next note or chord is shown on the staff and falling-note lane; the corresponding physical piano keys are highlighted pale mint.
+2. On any correct target note, the corresponding key flashes **bright green**.
+3. A chord requires all displayed notes, in any order. The phone/iPad microphone can recognise only one pitch at a time, so MIDI is best for simultaneous chords.
+4. Upon completion, the notes animate to the next step. Wrong keys never cause the song to advance.
+
+### Mode B — Continuous play
+
+1. Choose Continuous Play, set a tempo and press **Play**.
+2. The note highway moves autonomously. Every MusicXML/MIDI note onset is placed according to its relative beat-time; MIDI's original tempo-map is not reproduced.
+3. Correct keypresses within **±0.5 seconds** of the expected onset flash vivid green, as do their falling-note bars. Each note onset is matched separately, including repeated pitches.
+4. Missed notes are skipped without penalty or interruption. Press **Pause** to hold the position and **Play** to resume. Press **Restart** to return to the first note.
+5. Optional guide piano sound plays a simple built-in waveform, not recorded backing music or the original commercial song.
+
+**Switching between modes restarts the piece** to make the practice position predictable.
+
+## Use on iPad
+
+Deploy to HTTPS; iPad Safari can use **Use microphone**. Allow the microphone on request, then play single, distinct piano notes with a brief release between repeated notes. Acoustic note recognition is approximate; microphone performance depends on noise, room echo, and the instrument. For best polyphonic accuracy on a digital keyboard, use a compatible Web MIDI browser/device (e.g. desktop Chrome or Edge).
+
+If you enable guide sound while using a microphone, it could detect the guide notes instead of your piano. Keyfall deliberately prevents this combination.
+
+## Known V1.1 limitations
+
+- PDF, JPG, scanned scores and compressed `.mxl` are **not imported**. Convert them to uncompressed MusicXML first with an OMR/conversion tool.
+- The sheet preview shows pitches in a **simplified staff strip**, not faithful original score engraving, clefs, repeats, dynamics, pedal, tempo ramps or voice-specific notation.
+- The metronomic Continuous mode uses the **selected tempo for all music**. It deliberately does not reproduce advanced rubato and MIDI tempo-change maps.
+- The microphone uses a **single-note** pitch estimator. Chords, loud speaker playback and noisy environments can impair detection.
+- No per-user state persisted between reloads; exported/library scores are loaded from the static website; user uploads stay in browser memory only.
+- Direct cross-origin score URLs can fail when a hosting service blocks CORS. Download/upload is the fallback.
+- No live API search for copyrighted popular songs is included: third-party archives must be accessed through their websites or user-provided direct files.
+
+## Project files
+
+```text
+keyfall-v1.1/
+├── index.html               Browser app / UI
+├── styles.css               Mobile/desktop design and learning feedback
+├── js/
+│   ├── app.js               Modes, playback clock, library, input and UI
+│   ├── music.js             MusicXML / MIDI reading, track selection, score strip
+│   └── pitch.js             Acoustic pitch detection with silence gating
+├── samples/                 11 MusicXML practice pieces
+├── tests/                   Chord and short MIDI fixtures
+├── assets/favicon.svg
+├── .nojekyll                GitHub Pages compatibility
+├── README.md
+└── DEPLOYMENT.md
+```
+
+To test locally:
 
 ```bash
-cd keyfall-mvp
 python3 -m http.server 8000
 ```
 
-Visit `http://localhost:8000`. For a public deployment, upload the entire folder to Netlify Drop or GitHub Pages; no build step is required.
-
-## Suggested online score sources
-
-| Source | What it provides | How to use it with Keyfall |
-|---|---|---|
-| [OpenScore Lieder](https://musescore.com/openscore-lieder-corpus) | Classical / historic vocal scores, many offered as MusicXML from linked MuseScore pages | Download MusicXML if offered and upload |
-| [Mutopia Project](https://www.mutopiaproject.org/) | Public-domain / permissively licensed scores, often with MIDI downloads | Download `.mid` and upload (MIDI lacks original printed notation) |
-| [IMSLP](https://imslp.org/) | Extensive historic sheet-music PDF library | Convert an eligible PDF with an OMR app, then upload MusicXML |
-| [PlayScore 2](https://www.playscore.co/) | Scans PDF and photographed sheet music and exports MusicXML | Convert the score and upload the resulting MusicXML |
-
-A direct URL can work only when it points to a downloadable `.musicxml`, `.xml`, `.mid`, or `.midi` file and its host permits browser cross-origin requests (CORS). Linking to a score *web page* is not the same as linking to its actual file. No scraping or paid content bypass is included.
-
-## Architecture
-
-```text
-keyfall-mvp/
-├── index.html             Interface
-├── styles.css             Responsive appearance
-├── js/
-│   ├── app.js             Learner interaction / animation / inputs
-│   ├── music.js           MusicXML and SMF MIDI parsing; staff preview
-│   └── pitch.js           Microphone analysis / monophonic pitch detection
-├── samples/               Three built-in MusicXML scores
-├── tests/                 A short chord score and a tiny MIDI example
-├── assets/favicon.svg
-├── DEPLOYMENT.md
-└── README.md
-```
-
-Built with HTML, CSS, JavaScript, Web Audio and browser APIs. No `npm install`, bundling, external CDN, account, backend, or API key needed.
-
-## MVP scope and limitations
-
-- Uncompressed MusicXML (`.musicxml` / `.xml`) and standard beat-based MIDI (`.mid` / `.midi`) are supported. **Not supported yet:** PDF/JPG/PNG scans, compressed `.mxl`, MusicXML timewise, and MIDI with SMPTE timing.
-- The staff strip is a **simplified pitch preview**, not a faithful rendering of uploaded score pages. Rests, expression markings, full notation, clef changes, tempo changes, repeats, and some advanced notation are not engraved or played back as printed. Timing is deliberately learner-driven rather than time-driven.
-- A piano part is chosen when present; otherwise the first MusicXML part / a suitable MIDI track is used. The training mode groups pitches with matching onsets into a chord.
-- Microphone detection is **single pitch at a time**, approximate, and best for clear beginner melodies. Chords are collected sequentially; use Web MIDI for best note accuracy on supported desktops.
-- On repeated same-pitch notes, the learner must release and replay the note; this prevents a held key from automatically advancing through duplicate notes.
-- The on-screen keyboard is for testing as well as for learners who do not yet have an instrument. It does not synthesize audio.
-- Imported content stays in memory for the session; reloading resets the score selection to the first built-in song.
-
-## License
-
-The bundled beginner melody examples are provided for demo use and are based on public-domain / traditional melodies. The original Keyfall code in this folder may be modified and deployed by its recipient.
+Open `http://localhost:8000` from the *same computer*. For iPad microphone testing, deploy to HTTPS first. See [DEPLOYMENT.md](DEPLOYMENT.md).
