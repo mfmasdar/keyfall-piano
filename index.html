@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
+<meta content="#0c1220" name="theme-color"/>
+<meta content="Keyfall: load MusicXML or MIDI, configure practice, then learn piano with falling notes and a playable sampled electric-piano keyboard." name="description"/>
+<title>Keyfall V1.2 — Your piano practice studio</title>
+<link href="./assets/favicon.svg" rel="icon" type="image/svg+xml"/>
+<link href="./styles.css" rel="stylesheet"/><link href="./styles-v12.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="shell">
+<header class="topbar">
+<div class="brand"><span aria-hidden="true" class="brand-icon"><i></i><i></i><i></i><i></i></span><span>keyfall<span class="brand-dot">.</span></span></div>
+<div class="top-right"><nav aria-label="App page" class="page-nav"><span class="nav-step active" id="nav-setup">01 · SETUP</span><span class="nav-divider">→</span><span class="nav-step" id="nav-studio">02 · STUDIO</span></nav><span class="header-pill"><span class="live-dot"></span> THE PIANO PRACTICE STUDIO</span><span class="version">VERSION 1.2</span></div>
+</header>
+<main><div class="page-view" id="setup-page"><section class="hero">
+<div><div class="eyebrow">YOUR PIANO. YOUR PACE.</div><h1>Choose a song. <em>Make it yours.</em></h1><p>Choose your music, connect a piano, and set up your session. When you’re ready, enter a dedicated full-screen practice studio.</p></div>
+<div aria-hidden="true" class="hero-decoration"><span class="dec-note dec-note1"></span><span class="dec-note dec-note2"></span><span class="dec-note dec-note3"></span><span class="dec-note dec-note4"></span><span class="dec-note dec-note5"></span></div>
+</section><section aria-label="Choose music" class="library-panel">
+<div class="section-title-row"><div><div class="eyebrow">01 / CHOOSE YOUR MUSIC</div><h2>What would you like to play?</h2></div><span class="helper-pill">MusicXML · MIDI</span></div>
+<div aria-label="Music source" class="source-tabs" role="tablist">
+<button aria-selected="true" class="source-tab active" data-tab="library" role="tab">✦ <span>Starter library</span></button>
+<button aria-selected="false" class="source-tab" data-tab="upload" role="tab">↥ <span>Upload a score</span></button>
+<button aria-selected="false" class="source-tab" data-tab="url" role="tab">↗ <span>From a URL</span></button>
+</div>
+<div class="source-content" id="source-library" role="tabpanel">
+<div class="library-tools"><label class="search-wrap" for="song-search"><span aria-hidden="true">⌕</span><input aria-label="Search songs" autocomplete="off" id="song-search" placeholder="Find a song, composer or exercise…" type="search"/></label><select aria-label="Filter song library" id="library-filter"><option value="all">All pieces</option><option value="song">Familiar songs</option><option value="classical">Classical</option><option value="exercise">Exercises</option></select><span aria-live="polite" class="library-count" id="library-count"></span></div>
+<div class="song-grid" id="song-grid"></div>
+<div class="library-external"><span class="external-heading">Explore more music:</span><a href="https://www.mutopiaproject.org/" rel="noopener noreferrer" target="_blank">Mutopia (licensed classics) ↗</a><a href="https://openscore.cc/" rel="noopener noreferrer" target="_blank">OpenScore ↗</a><a href="https://bitmidi.com/" rel="noopener noreferrer" target="_blank">BitMidi (popular MIDI) ↗</a><span class="external-note">Download a .mid or .musicxml, then choose Upload. Popular-song archives may have separate rights.</span></div>
+</div>
+<div class="source-content hidden" id="source-upload" role="tabpanel">
+<label class="dropzone" for="file-input" id="dropzone"><span class="upload-symbol">↥</span><strong>Drop your score here, or browse files</strong><small>MusicXML (.musicxml, .xml) and MIDI (.mid, .midi) · Up to 5 MB</small><input accept=".musicxml,.xml,.mid,.midi" id="file-input" type="file"/></label>
+<p class="small-hint">For a PDF, photo or .mxl score, export or convert it to MusicXML first. <a href="https://www.playscore.co/" rel="noopener noreferrer" target="_blank">Try PlayScore 2 ↗</a></p>
+</div>
+<div class="source-content hidden" id="source-url" role="tabpanel">
+<form class="url-form" id="url-form"><label for="music-url">Paste a direct, public MusicXML or MIDI file URL</label><div class="url-row"><input id="music-url" placeholder="https://example.org/music/score.musicxml" required="" type="url"/><button class="button-primary" type="submit">Load score →</button></div></form>
+<p class="small-hint">The host must permit browser downloads (CORS). If it does not, download the file and use Upload instead.</p>
+<div class="discovery">Find scores at <a href="https://musescore.com/openscore-lieder-corpus" rel="noopener noreferrer" target="_blank">OpenScore Lieder ↗</a>, <a href="https://www.mutopiaproject.org/" rel="noopener noreferrer" target="_blank">Mutopia (MIDI) ↗</a>, or <a href="https://imslp.org/" rel="noopener noreferrer" target="_blank">IMSLP (PDF conversion) ↗</a>.</div>
+</div>
+<p aria-live="polite" class="load-status" id="load-status" role="status"></p>
+</section><section class="config-panel"><div class="section-title-row config-title"><div><div class="eyebrow">02 / SET YOUR PRACTICE</div><h2>How would you like to learn?</h2><p>These settings carry into your focused studio session.</p></div><span class="helper-pill">CUSTOMIZE YOUR SESSION</span></div><div class="track-controls" hidden="" id="track-controls"><label for="track-select">Instrument / MIDI track<select id="track-select"></select></label><label for="hand-select">Practice part<select id="hand-select"><option value="both">Both hands / all notes</option><option value="right">Right hand (staff 1)</option><option value="left">Left hand (staff 2)</option></select></label><span class="track-hint" id="track-hint"></span></div><div aria-label="Practice settings" class="mode-controls"><div class="mode-heading"><span class="footer-kicker">HOW SHOULD THE NOTES MOVE?</span><div aria-label="Practice mode" class="mode-switch" role="group"><button aria-pressed="true" class="mode-button active" id="mode-wait" type="button">✋ Wait for correct note</button><button aria-pressed="false" class="mode-button" id="mode-flow" type="button">▶ Continuous play</button></div></div><div class="transport"><label class="tempo-label" for="tempo-select">Tempo<select id="tempo-select"><option value="50">50 BPM · Slow</option><option selected="" value="70">70 BPM · Easy</option><option value="90">90 BPM</option><option value="110">110 BPM</option><option value="130">130 BPM · Fast</option></select></label><label class="sound-check"><input id="guide-sound" type="checkbox"/> Guide piano sound</label></div><p class="mode-description" id="mode-description">The next falling notes pause over their keys until you play every highlighted note correctly.</p><div class="status-legend"><span><i class="legend-target"></i> Target key</span><span><i class="legend-correct"></i> Correctly played</span><span><i class="legend-other"></i> Other key</span></div></div><div class="sound-panel">
+<div class="sound-panel-heading"><div class="eyebrow">YOUR INSTRUMENT SOUND</div><h3>Play with real keyboard feel.</h3><p>Tap the on-screen piano or use your computer keyboard and hear an expressive, locally sampled electric-piano-style tone.</p></div>
+<div class="sound-settings">
+<label for="sound-preset">Keyboard tone<select id="sound-preset"><option value="tine">Electric piano · Bright tine</option><option value="warm">Electric piano · Warm &amp; mellow</option></select></label>
+<label for="sound-volume">Sound volume <span id="volume-value">75%</span><input id="sound-volume" max="100" min="0" type="range" value="75"/></label>
+<label class="sound-check" for="key-sound"><input checked="" id="key-sound" type="checkbox"/> Sound on mouse / touch / computer keys</label>
+<button class="button-outline" id="test-sound" type="button">♫ Test the sound</button>
+</div>
+<p id="audio-status" role="status">Locally hosted audio samples · No third-party audio connection needed</p>
+</div></section><section aria-label="Connect your piano" class="listen-panel"><div class="listen-top"><div><div class="eyebrow">03 / CONNECT YOUR PIANO</div><h2>How will you play?</h2><p>Use the microphone to listen to a real piano, connect a compatible MIDI keyboard, or try the keys on screen.</p></div><span aria-hidden="true" class="listen-icon">♩</span></div><div class="input-choices"><button class="input-choice" id="mic-button" type="button"><span class="choice-icon">◉</span><span><strong>Use microphone</strong><small>Acoustic or digital piano sounds</small></span><span class="choice-action" id="mic-action">Connect →</span></button><button class="input-choice" id="midi-button" type="button"><span class="choice-icon">⌘</span><span><strong>Connect MIDI</strong><small>USB or MIDI-capable keyboard</small></span><span class="choice-action" id="midi-action">Connect →</span></button><div class="input-choice touch-choice"><span class="choice-icon">☝</span><span><strong>Tap the on-screen keys</strong><small>Always available · Great for trying it out</small></span><span class="choice-action active-action">READY</span></div></div><div aria-live="polite" class="input-feedback" id="input-feedback" role="status"><span class="feedback-light"></span><span id="input-message">Ready. Tap the highlighted piano keys, or connect your instrument.</span><span class="heard" id="heard-note"></span></div></section><section class="ready-panel"><div><div class="eyebrow">READY TO PLAY?</div><h2>All set. Enter your studio.</h2><p id="ready-summary">Twinkle, Twinkle, Little Star · Wait for correct note</p></div><button class="button-primary ready-button" id="begin-button" type="button">Enter practice studio <span aria-hidden="true">→</span></button></section></div><div class="page-view hidden" id="studio-page"><div class="studio-nav"><button class="button-outline back-button" id="back-button" type="button">← Back to setup</button><span class="studio-mode-label" id="studio-mode-label">WAIT FOR CORRECT NOTE</span><span class="studio-audio-label" id="studio-audio-label">● Electric piano ready</span></div><section aria-label="Piano practice" class="practice-panel">
+<div class="practice-header"><div class="practice-heading"><div class="eyebrow">FOCUS MODE · ONE NOTE AT A TIME</div><h2 id="piece-title">Twinkle, Twinkle, Little Star</h2><p id="piece-caption">Traditional · C major · Single-note practice</p></div><div class="practice-actions"><button class="button-outline" id="reset-button" type="button">↺ Restart</button><button class="button-outline" id="fullscreen-button" type="button">⛶ Full screen</button><button aria-expanded="true" class="button-outline" id="score-toggle" type="button">♫ Hide score</button><button class="transport-play" hidden="" id="play-button" type="button">▶ Play</button></div></div>
+
+
+<div class="score-card" id="score-card"><div class="score-heading"><span><span class="sparkle">✳</span> SHEET PREVIEW</span><span class="score-side">Simplified note guide · Current phrase</span></div><div aria-label="Staff preview of next notes" class="score-preview" id="score-preview"></div></div>
+<div class="stage-head"><div class="stage-left"><span class="stage-indicator" id="stage-indicator"><span class="stage-pulse"></span> WAIT-FOR-CORRECT-NOTE MODE</span><span id="stage-subtitle">Notes move when you do.</span></div><div class="stage-note" id="stage-note">PLAY <b>C4</b></div></div>
+<div class="instrument-viewport" id="instrument-viewport">
+<div class="instrument-inner" id="instrument-inner">
+<div class="fall-area" id="fall-area"><div class="fall-lines" id="fall-lines"></div><div class="fall-bars" id="fall-bars"></div><div class="strike-line"></div><div class="stage-top-label">UP NEXT ↓</div></div>
+<div aria-label="Playable practice piano" class="piano" id="piano"></div>
+</div>
+</div>
+<div class="studio-footer"><div class="current-notes"><span class="footer-kicker">YOUR NEXT NOTES</span><div class="note-chips" id="target-notes"></div></div><div class="practice-progress"><span id="step-count">NOTE 1 OF 42</span><div class="progress-track"><div id="progress-fill"></div></div></div></div>
+<div aria-live="polite" class="studio-feedback"><span class="feedback-light"></span><span id="studio-message">Play the highlighted piano key, or connect your instrument in Setup.</span><span id="studio-heard-note"></span></div></section><p class="studio-tip">Tip: use your mouse or touch screen to play the on-screen keyboard, or use a connected piano. Computer-keyboard shortcuts: A W S E D F T G Y H U J K.</p></div><footer class="footer"><span>keyfall. <em>One note at a time.</em></span><span>Two learning modes · No scoring · Your files stay in your browser</span></footer></main>
+</div>
+<script src="./js/app.js" type="module"></script>
+</body>
+</html>
